@@ -5,6 +5,7 @@ project(broken-runner)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
+include(CTest)
 include(FetchContent)
 
 FetchContent_Declare(Catch2
@@ -21,5 +22,8 @@ add_library(stb SHARED stb_src.cpp)
 add_executable(broken-runner ${SOURCES})
 
 target_link_libraries(broken-runner PRIVATE stb Catch2::Catch2WithMain)
+
+enable_testing()
+add_test(NAME br COMMAND broken-runner)
 
 
