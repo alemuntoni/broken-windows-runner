@@ -2,14 +2,12 @@
 
 #include "stb/stb_image.h"
 
-int main(int argc, char *argv[])
-{
+#include <catch2/catch_test_macros.hpp>
+
+TEST_CASE("") {
     int w, h;
-    auto* ptr = stbi_load("", &w, &h, nullptr, 4);
+    auto* ptr =
+        stbi_load("../TextureDouble_A.png", &w, &h, nullptr, 4);
 
-    if (ptr) {
-        std::cerr << "ok\n";
-    }
-
-    return 0;
+    REQUIRE(ptr);
 }
