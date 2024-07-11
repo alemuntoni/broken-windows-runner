@@ -1,0 +1,38 @@
+name: BuildAndRun
+
+on:
+  [push, pull_request]
+
+jobs:
+  build_and_run_tests:
+    name: Build and run
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+    - name: Install dependencies
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get install cmake ninja-build
+    - name: Install dependencies
+      if: runner.os == 'macOS'
+      shell: bash
+      run: |
+        brew install cmake ninja
+    - name: Build
+      shell: bash
+      run: |
+        mkdir build
+        cd build
+        cmake -GNinja -DCMAKE_BUILD_TYPE=Release ..
+        ninja
+    - name: Run
+      shell: bash
+      run: |
+        cd build
+        ./broken-runner
